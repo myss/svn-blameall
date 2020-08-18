@@ -8,7 +8,7 @@
 from difflib import SequenceMatcher
 import optparse, re, subprocess, sys
 
-__version__ = '1.1.20071201'
+__version__ = '1.2.20200818'
 
 class MultiDiff:
     """ Accumulates successive revisions of a text, and produces a comprehensive
@@ -98,7 +98,6 @@ class MultiDiff:
         return self.blame
     
 def doit(cmd):
-    #print cmd
     out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True).stdout
     return out.read()
 
@@ -155,10 +154,10 @@ def main(argv):
             rev1 = options.revision
             
     if not args:
-        print >>sys.stderr, "Need a file path to work on"
+        print("Need a file path to work on", file=sys.stderr)
         return
     if len(args) > 1:
-        print >>sys.stderr, "Can only work on one file at a time"
+        print("Can only work on one file at a time", file=sys.stderr)
         return
 
     fpath = args[0]
@@ -171,19 +170,19 @@ def main(argv):
     # Load up the MultiDiff with all the text.
     multidiff = MultiDiff()
     for i, (rev, user) in enumerate(revs):
-        print >>sys.stderr, rev,
+        print(rev, file=sys.stderr)
         text = get_rev_file(fpath, rev)
         multidiff.add_rev(i, text)
         
     # Print the resulting combined file.
-    print >>sys.stderr
+    print("", file=sys.stderr)
     for i1, i2, line in multidiff.blame_data():
         r1 = revs[i1][0]
         if i2 == len(revs)-1:
             r2 = revn
         else:
             r2 = revs[i2+1][0]-1
-        print "%5s %5s %s" % (r1, r2, line)
+        print("%5s %5s %s" % (r1, r2, line))
 
 if __name__ == '__main__':
     main(sys.argv[1:])
