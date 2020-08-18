@@ -23,7 +23,7 @@ class MultiDiff:
     def add_rev(self, rev, lines):
         if self.last_lines is None:
             self.blame = [ [rev, rev, l] for l in lines ]
-            self.curlines = range(len(lines))
+            self.curlines = list(range(len(lines)))
         else:
             self.next_lines = lines
             self.next_rev = rev
