@@ -98,7 +98,7 @@ class MultiDiff:
         return self.blame
     
 def doit(cmd):
-    out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True).stdout
+    out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True, text=True).stdout
     return out.read()
 
 def get_revs_for_file(fpath, revarg=None):
